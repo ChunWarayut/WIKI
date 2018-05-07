@@ -38,38 +38,27 @@ export class MyApp {
              * For calls from Wikitude SDK --> Ionic app see the captureScreen example in 
              * WikitudeIonic3StarterApp/www/assets/07_3dModels_6_3dModelAtGeoLocation/js/3dmodelatgeolocation.js*/
             // set the function to be called, when a "communication" is indicated from the AR View  
-
-            WikitudePlugin.setJSONObjectReceivedCallback(obj => {
+            WikitudePlugin.setOnUrlInvokeCallback(function(url) {
       
-                console.log("setJSONObjectReceivedCallback ..."+JSON.stringify(obj));
-                // this an example of how to receive a call from a function in the Wikitude SDK (Wikitude SDK --> Ionic)
-                if (obj["action"]){
-                    switch (obj["action"]) {
-                        case "closeWikitudePlugin":
-                            // close wikitude plugin
-                            WikitudePlugin.close();
-                            break;
-                        case "captureScreen":
-
-                            WikitudePlugin.captureScreen(
-                                (absoluteFilePath) => {
-                                    console.log("snapshot stored at:\n" + absoluteFilePath);
-                
-                                    // this an example of how to call a function in the Wikitude SDK (Ionic2 app --> Wikitude SDK)
-                                    WikitudePlugin.callJavaScript("World.testFunction('Screenshot saved at: " + absoluteFilePath +"');");
-                                },
-                                (errorMessage) => {
-                                    console.log(errorMessage);
-                                },
-                                true, null
-                            );
-    
-                            break;
-                        default:
-                            console.warn("action not handled => ", obj);
-                            break;
-                    } // end switch
-                } // end if (obj.action)
+              console.log("setOnUrlInvokeCallback ...");
+              
+              // this an example of how to receive a call from a function in the Wikitude SDK (Wikitude SDK --> Ionic2)
+              if (url.indexOf('captureScreen') > -1) {
+                  WikitudePlugin.captureScreen(
+                      (absoluteFilePath) => {
+                          console.log("snapshot stored at:\n" + absoluteFilePath);
+      
+                          // this an example of how to call a function in the Wikitude SDK (Ionic2 app --> Wikitude SDK)
+                          WikitudePlugin.callJavaScript("World.testFunction('Screenshot saved at: " + absoluteFilePath +"');");
+                      },
+                      (errorMessage) => {
+                          console.log(errorMessage);
+                      },
+                      true, null
+                  );
+              } else {
+                  alert(url + "not handled");
+              }
             });
       
             /**
