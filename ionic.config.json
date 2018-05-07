@@ -1,0 +1,8 @@
+{
+  "name": "WIKI",
+  "app_id": "9de5cd5b",
+  "type": "ionic-angular",
+  "integrations": {
+    "cordova": {}
+  }
+}
